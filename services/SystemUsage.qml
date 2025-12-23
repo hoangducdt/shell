@@ -34,21 +34,21 @@ Singleton {
         if (kib >= tib)
             return {
                 value: kib / tib,
-                unit: "TiB"
+                unit: "TB"
             };
         if (kib >= gib)
             return {
                 value: kib / gib,
-                unit: "GiB"
+                unit: "GB"
             };
         if (kib >= mib)
             return {
                 value: kib / mib,
-                unit: "MiB"
+                unit: "MB"
             };
         return {
             value: kib,
-            unit: "KiB"
+            unit: "KB"
         };
     }
 
@@ -183,9 +183,8 @@ Singleton {
         stdout: StdioCollector {
             onStreamFinished: {
                 let cpuTemp = text.match(/(?:Package id [0-9]+|Tdie):\s+((\+|-)[0-9.]+)(°| )C/);
-                if (!cpuTemp)
-                    // If AMD Tdie pattern failed, try fallback on Tctl
-                    cpuTemp = text.match(/Tctl:\s+((\+|-)[0-9.]+)(°| )C/);
+                if (!cpuTemp) cpuTemp = text.match(/Tctl:\s+((\+|-)[0-9.]+)(°| )C/);
+                if (!cpuTemp) cpuTemp = text.match(/temp1:\s+((\+|-)[0-9.]+)(°| )C/);
 
                 if (cpuTemp)
                     root.cpuTemp = parseFloat(cpuTemp[1]);

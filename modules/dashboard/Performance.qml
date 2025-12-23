@@ -67,12 +67,15 @@ RowLayout {
             return `${+fmt.value.toFixed(1)}${fmt.unit}`;
         }
         label2: {
-            const fmt = SystemUsage.formatKib(SystemUsage.storageUsed);
-            return `${Math.floor(fmt.value)}${fmt.unit}`;
+            const fmt = SystemUsage.formatKib(SystemUsage.memUsed);
+            return `${Math.round(SystemUsage.memPerc * 100)}%`
         }
 
         sublabel1: qsTr("Memory")
-        sublabel2: qsTr("Storage")
+        sublabel2: {
+            const totalFmt = SystemUsage.formatKib(SystemUsage.memTotal);
+            return `of ${Math.floor(totalFmt.value)}${totalFmt.unit}`;
+        }
     }
 
     component Resource: Item {
